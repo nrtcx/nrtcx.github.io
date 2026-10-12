@@ -30,6 +30,7 @@ ul.cards{list-style:none;padding:0;margin:14px 0;display:grid;grid-template-colu
 ul.cards li{background:#fff;border:1px solid #e3e3e8;border-radius:12px;padding:14px 16px}
 ul.cards a{font-weight:600;text-decoration:none;color:#1c1c1e;font-size:16px}
 ul.cards p{margin:6px 0 0;color:#555;font-size:14px;line-height:1.5}
+ul.cards.one{grid-template-columns:1fr}
 ul.cards p.calc a{font-weight:600;font-size:14px;color:#0b57d0;text-decoration:underline}
 p.go{margin:14px 0 0;font-size:15px}
 p.go a{font-weight:700}
