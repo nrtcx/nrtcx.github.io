@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>양방 계산기 원리: 아비트리지 판정식과 금액 배분 공식</title>
+<meta name="description" content="양방(아비트리지) 계산기가 내부에서 하는 계산을 공식과 예제로 풉니다. 배당 역수의 합으로 차익 여부를 판정하고, 어느 결과가 나와도 같은 금액을 받도록 금액을 나누는 방법, 직접 구현하는 코드까지 정리했습니다.">
+<link rel="canonical" href="https://nrtcx.github.io/guide/arbitrage/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="양방 계산기 원리: 아비트리지 판정식과 금액 배분 공식">
+<meta property="og:description" content="양방(아비트리지) 계산기가 내부에서 하는 계산을 공식과 예제로 풉니다. 배당 역수의 합으로 차익 여부를 판정하고, 어느 결과가 나와도 같은 금액을 받도록 금액을 나누는 방법, 직접 구현하는 코드까지 정리했습니다.">
+<meta property="og:url" content="https://nrtcx.github.io/guide/arbitrage/">
+<meta property="og:locale" content="ko_KR">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "차익률이 0.98 이면 수익률은 2% 인가요?", "acceptedAnswer": {"@type": "Answer", "text": "정확히는 1/0.98 − 1 = 2.04% 입니다. S 가 1 에 가까울 때는 1 − S 로 어림해도 차이가 작지만, 금액을 나눌 때는 반드시 S 로 나눠야 수령액이 같아집니다."}}, {"@type": "Question", "name": "3-way 경기에서 두 결과만 걸면 안 되나요?", "acceptedAnswer": {"@type": "Answer", "text": "남은 한 결과가 나오면 전액을 잃으므로 양방이 아닙니다. 무승부가 있는 경기는 세 결과를 모두 포함해 S 를 계산해야 합니다."}}, {"@type": "Question", "name": "수령액을 똑같이 맞추지 않아도 되나요?", "acceptedAnswer": {"@type": "Answer", "text": "됩니다. 한 결과에는 원금만 돌아오게 하고 다른 결과에 이익을 몰아 주는 배분도 가능합니다. 다만 기대 수익의 합은 달라지지 않고 결과별 편차만 생깁니다."}}]}</script>
+</head>
+<body>
+<header class="top"><div class="in"><a class="brand" href="/">놀이터 데이터 노트</a><nav><a href="/">홈</a><a href="/guide/">계산 가이드</a></nav></div></header>
+<main>
+<h1>양방(아비트리지) 계산기 원리와 금액 배분 공식</h1>
+<p class="meta">계산 가이드 · 최종 수정 2026-10-12</p>
+<p class="lead">양방 계산은 두 줄짜리 산수입니다. 배당의 역수를 전부 더해 1 보다 작은지 보고, 작다면 그 비율대로 금액을 나눕니다. 이 글은 그 두 줄을 예제로 확인하고, 아래 계산기로 바로 돌려 볼 수 있게 정리했습니다.</p>
+
+<h2>판정: 역수의 합이 1 보다 작은가</h2>
+<p>한 경기의 모든 결과에 대해 가장 좋은 배당을 하나씩 고른 뒤 역수를 더합니다. 이 값을 보통 차익률 또는 아비 합이라고 부릅니다.</p>
+<div class="f">S = 1/o₁ + 1/o₂ (+ 1/o₃)</div>
+<p>S 가 1 보다 작으면 어느 결과가 나와도 투자금보다 많이 돌려받는 배분이 존재합니다. 1 이상이면 어떻게 나눠도 손실이 납니다. 같은 곳의 배당만으로는 S 가 항상 1 을 넘습니다. 운영 수수료가 배당에 들어 있기 때문입니다. S 가 1 밑으로 내려가는 경우는 서로 다른 곳의 배당이 엇갈릴 때뿐입니다.</p>
+
+<h2>배분: 역수 비율대로 나눈다</h2>
+<div class="f">결과 i 에 거는 금액 = 총 투자금 × (1/oᵢ) ÷ S<br>보장 수령액 = 총 투자금 ÷ S<br>수익률 = 1/S − 1</div>
+
+<h3>예제 1: 2-way, 배당 2.10 과 2.05</h3>
+<p>S = 1/2.10 + 1/2.05 = 0.4762 + 0.4878 = 0.9640 입니다. 1 보다 작으므로 차익이 있습니다. 총 100만 원을 나누면 다음과 같습니다.</p>
+<div class="tw"><table>
+<tr><th>결과</th><th>배당</th><th>배분 금액</th><th>적중 시 수령</th></tr>
+<tr><td>A 승</td><td>2.10</td><td>493,976원</td><td>1,037,349원</td></tr>
+<tr><td>B 승</td><td>2.05</td><td>506,024원</td><td>1,037,349원</td></tr>
+</table></div>
+<p>어느 쪽이 나와도 1,037,349원을 받으므로 보장 수익은 37,349원, 수익률은 3.73% 입니다. 흔히 1 − S 인 3.6% 로 어림하는데, 정확한 값은 1/S − 1 입니다.</p>
+
+<h3>예제 2: 3-way, 배당 2.10 / 3.40 / 3.60</h3>
+<p>S = 0.4762 + 0.2941 + 0.2778 = 1.0481 입니다. 1 을 넘으므로 차익이 없습니다. 이 배당표에 균등 수령이 되도록 100만 원을 나누면 어느 결과든 954,117원만 돌아옵니다. 넘치는 4.81% 가 그 배당표의 마진입니다.</p>
+
+<h2>직접 돌려 보기</h2>
+<p>아래 계산기에 예제 1 의 값을 넣어 두었습니다. 배당과 총 투자금을 바꿔 가며 확인해 보세요. 결과 칸을 추가하면 3-way 도 계산됩니다.</p>
+<div class="w">
+<script src="https://nrt.cx/embed.js" data-widget="calc" data-tool="arb" data-odds="2.10,2.05" data-total="1000000" data-theme="light"></script>
+<a href="https://nrt.cx/p/calc/arb">양방(아비트리지) 계산기 - 놀이터</a>
+</div>
+
+<h2>코드로 옮기면</h2>
+<pre><code>function arbitrage(odds, total) {
+  const s = odds.reduce((sum, o) =&gt; sum + 1 / o, 0);
+  return {
+    sum: s,                                   // 1 미만이면 차익 존재
+    stakes: odds.map((o) =&gt; total / o / s),   // 결과별 배분 금액
+    payout: total / s,                        // 보장 수령액
+    roi: 1 / s - 1,                           // 수익률
+  };
+}
+
+arbitrage([2.10, 2.05], 1000000);
+// sum 0.9640, stakes [493976, 506024], payout 1037349, roi 0.0373</code></pre>
+
+<h2>계산이 맞아도 결과가 달라지는 이유</h2>
+<p>위 식은 입력한 배당이 체결 순간까지 유지된다는 전제 위에 있습니다. 실제로는 다음 네 가지가 계산을 어긋나게 만듭니다.</p>
+<ul>
+<li><b>배당 변동</b>: 한쪽을 넣는 사이 반대쪽 배당이 내려가면 S 가 1 을 넘습니다. 차익 구간은 대개 수 분 안에 사라집니다.</li>
+<li><b>금액 단위</b>: 493,976원처럼 끝자리가 있는 금액은 반올림해야 하고, 그만큼 양쪽 수령액이 벌어집니다.</li>
+<li><b>정산 규칙 차이</b>: 연장 포함 여부, 경기 취소 처리, 무승부 환급 규칙이 서로 다르면 같은 결과로 보였던 두 선택이 겹치지 않습니다.</li>
+<li><b>수수료와 환전</b>: 이익에 붙는 수수료나 환전 비용은 S 에 직접 더해지는 효과를 냅니다. 3% 차익은 수수료 2% 만으로도 대부분 사라집니다.</li>
+</ul>
+<p class="note">이 계산기는 입력한 배당을 나누는 배분 계산기입니다. 실시간으로 차익을 찾아 주는 도구가 아니며, 계산 결과가 실제 수익을 보장하지 않습니다.</p>
+
+<h2>자주 묻는 질문</h2>
+<dl class="faq"><dt>차익률이 0.98 이면 수익률은 2% 인가요?</dt><dd>정확히는 1/0.98 − 1 = 2.04% 입니다. S 가 1 에 가까울 때는 1 − S 로 어림해도 차이가 작지만, 금액을 나눌 때는 반드시 S 로 나눠야 수령액이 같아집니다.</dd><dt>3-way 경기에서 두 결과만 걸면 안 되나요?</dt><dd>남은 한 결과가 나오면 전액을 잃으므로 양방이 아닙니다. 무승부가 있는 경기는 세 결과를 모두 포함해 S 를 계산해야 합니다.</dd><dt>수령액을 똑같이 맞추지 않아도 되나요?</dt><dd>됩니다. 한 결과에는 원금만 돌아오게 하고 다른 결과에 이익을 몰아 주는 배분도 가능합니다. 다만 기대 수익의 합은 달라지지 않고 결과별 편차만 생깁니다.</dd></dl>
+<h2>다른 계산 가이드</h2>
+<ul class="list"><li><a href="/guide/parlay/">폴더 조합 배당 계산</a><span>총 배당은 곱셈, 그런데 환급률도 같이 곱해진다는 점</span></li><li><a href="/guide/no-vig/">북 마진과 노빅 계산</a><span>배당표에서 마진을 뽑고 공정 배당으로 되돌리는 법</span></li><li><a href="/guide/kelly/">켈리 비율 계산</a><span>우위가 있을 때 자금의 몇 % 인지, 그리고 왜 절반만 쓰는지</span></li><li><a href="/guide/odds-converter/">배당 변환</a><span>소수, 미국식, 분수, 홍콩, 인도네시아, 말레이 표기 한 번에</span></li><li><a href="/guide/hedge/">해지(헤지)와 중간 정산 계산</a><span>남은 한 경기의 반대편에 얼마를 넣어야 손익이 고정되는지</span></li></ul>
+</main>
+<footer>
+<p>계산 결과는 입력한 값이 그대로 유지된다는 가정 위의 참고용 수치이며, 어떤 베팅도 권유하지 않습니다. 과몰입이 걱정되면 한국도박문제예방치유원 상담전화 1336 을 이용해 주세요.</p>
+<p>데이터와 계산기 제공: 놀이터 nrt.cx · 위젯 코드 <a href="https://github.com/nrtcx/noritur-widgets">GitHub</a></p>
+</footer>
+</body>
+</html>

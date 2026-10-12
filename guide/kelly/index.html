@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>켈리 베팅 비율 계산기: 켈리 공식 유도와 하프 켈리를 쓰는 이유</title>
+<meta name="description" content="켈리 기준(Kelly criterion) 공식이 어디서 나오는지, 배당과 예상 승률로 자금 대비 비율을 계산하는 방법, 승률 추정이 틀렸을 때 생기는 일과 하프·쿼터 켈리를 쓰는 이유를 예제와 코드로 정리했습니다.">
+<link rel="canonical" href="https://nrtcx.github.io/guide/kelly/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="켈리 베팅 비율 계산기: 켈리 공식 유도와 하프 켈리를 쓰는 이유">
+<meta property="og:description" content="켈리 기준(Kelly criterion) 공식이 어디서 나오는지, 배당과 예상 승률로 자금 대비 비율을 계산하는 방법, 승률 추정이 틀렸을 때 생기는 일과 하프·쿼터 켈리를 쓰는 이유를 예제와 코드로 정리했습니다.">
+<meta property="og:url" content="https://nrtcx.github.io/guide/kelly/">
+<meta property="og:locale" content="ko_KR">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "예상 승률은 어디서 가져오나요?", "acceptedAnswer": {"@type": "Answer", "text": "직접 추정하거나, 마진이 낮은 배당표에서 마진을 걷어낸 공정 확률을 씁니다. 어느 쪽이든 추정치이므로 오차가 있다는 전제로 분수 켈리를 쓰는 것이 일반적입니다."}}, {"@type": "Question", "name": "여러 경기에 동시에 참여할 때는요?", "acceptedAnswer": {"@type": "Answer", "text": "경기마다 따로 계산한 비율을 그대로 더하면 전체 비중이 과해집니다. 동시에 진행되는 건수가 많으면 각 비율을 낮추거나 전체 합에 상한을 두는 방식으로 조정합니다."}}, {"@type": "Question", "name": "조합에도 켈리를 쓸 수 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "조합의 총 배당과 조합 전체의 적중 확률을 넣으면 계산은 됩니다. 다만 확률을 곱하는 과정에서 추정 오차도 같이 커지므로 결과 비율은 단일 경기보다 훨씬 보수적으로 봐야 합니다."}}]}</script>
+</head>
+<body>
+<header class="top"><div class="in"><a class="brand" href="/">놀이터 데이터 노트</a><nav><a href="/">홈</a><a href="/guide/">계산 가이드</a></nav></div></header>
+<main>
+<h1>켈리 베팅 비율 계산기: 공식과 하프 켈리</h1>
+<p class="meta">계산 가이드 · 최종 수정 2026-10-12</p>
+<p class="lead">켈리 공식은 한 줄이지만, 입력값인 예상 승률이 추정치라는 점 때문에 그대로 쓰면 위험합니다. 공식이 무엇을 최대화하는지, 추정이 빗나가면 어떻게 되는지를 숫자로 확인합니다.</p>
+
+<h2>공식</h2>
+<div class="f">f = (p × o − 1) ÷ (o − 1)</div>
+<p>p 는 예상 승률, o 는 소수 배당, f 는 자금 대비 비율입니다. 분자 p × o − 1 은 기대값률이고, 분모 o − 1 은 이겼을 때 금액 1 당 순이익입니다. 즉 켈리 비율은 우위를 순배당으로 나눈 값입니다.</p>
+
+<h3>예제: 배당 2.50, 예상 승률 45%</h3>
+<p>f = (0.45 × 2.50 − 1) ÷ (2.50 − 1) = 0.125 ÷ 1.5 = 8.33% 입니다. 자금이 100만 원이면 풀 켈리 83,333원, 하프 켈리 41,667원, 쿼터 켈리 20,833원입니다.</p>
+
+<h3>예제: 배당 1.90, 예상 승률 50%</h3>
+<p>f = (0.50 × 1.90 − 1) ÷ 0.90 = −5.6% 입니다. 음수는 우위가 없다는 뜻이고, 켈리의 답은 0, 즉 참여하지 않는 것입니다.</p>
+
+<h2>직접 돌려 보기</h2>
+<p>첫 번째 예제 값을 넣어 둔 계산기입니다. 승률을 1~2%p 씩 바꿔 보면 비율이 얼마나 민감하게 움직이는지 알 수 있습니다.</p>
+<div class="w">
+<script src="https://nrt.cx/embed.js" data-widget="calc" data-tool="kelly" data-odds="2.50" data-prob="45" data-theme="light"></script>
+<a href="https://nrt.cx/p/calc/kelly">켈리(Kelly) 베팅 비율 계산기 - 놀이터</a>
+</div>
+
+<h2>공식이 최대화하는 것</h2>
+<p>켈리는 한 번의 기대 수익이 아니라 자금의 장기 성장률을 최대화합니다. 비율 f 로 계속 참여할 때 회당 평균 로그 성장률은 다음과 같습니다.</p>
+<div class="f">g(f) = p × ln(1 + f(o − 1)) + (1 − p) × ln(1 − f)</div>
+<p>이 식을 f 로 미분해 0 이 되는 지점을 풀면 위의 켈리 공식이 나옵니다. 성장률 곡선은 켈리 비율에서 꼭짓점을 찍고, 그보다 많이 걸면 다시 내려갑니다. 켈리의 약 두 배를 걸면 우위가 있는데도 장기 성장률이 0 이 되고, 그 이상은 자금이 줄어듭니다.</p>
+
+<h2>승률 추정이 빗나가면</h2>
+<p>배당 2.50 에서 예상 승률에 따른 풀 켈리 비율은 다음과 같습니다.</p>
+<div class="tw"><table>
+<tr><th>예상 승률</th><th>기대값률</th><th>풀 켈리</th></tr>
+<tr><td>40%</td><td>0.0%</td><td>0.0%</td></tr>
+<tr><td>42%</td><td>+5.0%</td><td>3.3%</td></tr>
+<tr><td>45%</td><td>+12.5%</td><td>8.3%</td></tr>
+<tr><td>48%</td><td>+20.0%</td><td>13.3%</td></tr>
+</table></div>
+<p>승률을 3%p 높게 잡았을 뿐인데 비율은 3.3% 에서 8.3% 로 두 배 넘게 뜁니다. 실제 승률이 42% 인데 45% 로 믿고 풀 켈리를 쓰면 적정 비율의 2.5 배를 거는 셈이고, 이는 성장률이 음수가 되는 구간입니다. 추정 오차가 과하게 거는 방향으로 훨씬 아프게 작용합니다.</p>
+
+<h2>그래서 하프, 쿼터 켈리</h2>
+<p>성장률 곡선은 꼭짓점 근처에서 완만합니다. 비율을 절반으로 줄이면 성장률은 약 25% 만 줄고 자금의 출렁임은 절반으로 줄어듭니다. 쿼터 켈리는 성장률의 약 44% 를 유지하면서 출렁임을 4분의 1 로 줄입니다. 승률 추정에 확신이 없을수록 분수를 작게 잡는 것이 합리적입니다.</p>
+
+<h2>코드로 옮기면</h2>
+<pre><code>function kelly(odds, prob, bankroll, fraction = 1) {
+  const edge = prob * odds - 1;            // 기대값률
+  const f = Math.max(0, edge / (odds - 1));
+  return { edge, fraction: f * fraction, stake: bankroll * f * fraction };
+}
+
+kelly(2.5, 0.45, 1000000);        // fraction 0.0833, stake 83333
+kelly(2.5, 0.45, 1000000, 0.5);   // fraction 0.0417, stake 41667
+kelly(1.9, 0.50, 1000000);        // fraction 0, stake 0</code></pre>
+
+<h2>자주 묻는 질문</h2>
+<dl class="faq"><dt>예상 승률은 어디서 가져오나요?</dt><dd>직접 추정하거나, 마진이 낮은 배당표에서 마진을 걷어낸 공정 확률을 씁니다. 어느 쪽이든 추정치이므로 오차가 있다는 전제로 분수 켈리를 쓰는 것이 일반적입니다.</dd><dt>여러 경기에 동시에 참여할 때는요?</dt><dd>경기마다 따로 계산한 비율을 그대로 더하면 전체 비중이 과해집니다. 동시에 진행되는 건수가 많으면 각 비율을 낮추거나 전체 합에 상한을 두는 방식으로 조정합니다.</dd><dt>조합에도 켈리를 쓸 수 있나요?</dt><dd>조합의 총 배당과 조합 전체의 적중 확률을 넣으면 계산은 됩니다. 다만 확률을 곱하는 과정에서 추정 오차도 같이 커지므로 결과 비율은 단일 경기보다 훨씬 보수적으로 봐야 합니다.</dd></dl>
+<h2>다른 계산 가이드</h2>
+<ul class="list"><li><a href="/guide/arbitrage/">양방(아비트리지) 계산</a><span>배당 역수의 합으로 차익 여부를 판정하고 금액을 나누는 법</span></li><li><a href="/guide/parlay/">폴더 조합 배당 계산</a><span>총 배당은 곱셈, 그런데 환급률도 같이 곱해진다는 점</span></li><li><a href="/guide/no-vig/">북 마진과 노빅 계산</a><span>배당표에서 마진을 뽑고 공정 배당으로 되돌리는 법</span></li><li><a href="/guide/odds-converter/">배당 변환</a><span>소수, 미국식, 분수, 홍콩, 인도네시아, 말레이 표기 한 번에</span></li><li><a href="/guide/hedge/">해지(헤지)와 중간 정산 계산</a><span>남은 한 경기의 반대편에 얼마를 넣어야 손익이 고정되는지</span></li></ul>
+</main>
+<footer>
+<p>계산 결과는 입력한 값이 그대로 유지된다는 가정 위의 참고용 수치이며, 어떤 베팅도 권유하지 않습니다. 과몰입이 걱정되면 한국도박문제예방치유원 상담전화 1336 을 이용해 주세요.</p>
+<p>데이터와 계산기 제공: 놀이터 nrt.cx · 위젯 코드 <a href="https://github.com/nrtcx/noritur-widgets">GitHub</a></p>
+</footer>
+</body>
+</html>

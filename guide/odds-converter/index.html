@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>배당 변환기: 소수·미국식·분수·홍콩·말레이 배당 변환 공식 정리</title>
+<meta name="description" content="소수 배당, 미국식(+150/−200), 분수(3/2), 홍콩, 인도네시아, 말레이 배당을 서로 바꾸는 공식과 변환표를 정리했습니다. 각 표기가 암시하는 확률 계산과 직접 구현하는 코드도 함께 담았습니다.">
+<link rel="canonical" href="https://nrtcx.github.io/guide/odds-converter/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="배당 변환기: 소수·미국식·분수·홍콩·말레이 배당 변환 공식 정리">
+<meta property="og:description" content="소수 배당, 미국식(+150/−200), 분수(3/2), 홍콩, 인도네시아, 말레이 배당을 서로 바꾸는 공식과 변환표를 정리했습니다. 각 표기가 암시하는 확률 계산과 직접 구현하는 코드도 함께 담았습니다.">
+<meta property="og:url" content="https://nrtcx.github.io/guide/odds-converter/">
+<meta property="og:locale" content="ko_KR">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "국내에서 쓰는 배당은 어떤 표기인가요?", "acceptedAnswer": {"@type": "Answer", "text": "소수 배당입니다. 유럽식이라고도 부릅니다. 원금을 포함한 총 수령 배수라서 금액에 곱하기만 하면 수령액이 나옵니다."}}, {"@type": "Question", "name": "미국식 −110 은 왜 그렇게 자주 보이나요?", "acceptedAnswer": {"@type": "Answer", "text": "양쪽 확률이 반반인 마켓에 마진을 얹은 표준 가격이기 때문입니다. 소수로 1.91 이고, 양쪽이 모두 −110 이면 배당표 마진은 약 4.8% 입니다."}}, {"@type": "Question", "name": "분수 배당 5/2 와 2/5 는 어떻게 다른가요?", "acceptedAnswer": {"@type": "Answer", "text": "5/2 는 2 를 넣어 5 를 버는 역배당으로 소수 3.50 입니다. 2/5 는 5 를 넣어 2 를 버는 정배당으로 소수 1.40 입니다. 앞 숫자가 크면 역배당입니다."}}]}</script>
+</head>
+<body>
+<header class="top"><div class="in"><a class="brand" href="/">놀이터 데이터 노트</a><nav><a href="/">홈</a><a href="/guide/">계산 가이드</a></nav></div></header>
+<main>
+<h1>배당 변환기: 6가지 배당 표기 변환 공식</h1>
+<p class="meta">계산 가이드 · 최종 수정 2026-10-12</p>
+<p class="lead">같은 배당이 지역에 따라 2.50, +150, 3/2, 1.50, −0.667 로 적힙니다. 전부 소수 배당 하나로 바꿔서 읽으면 헷갈릴 일이 없습니다. 변환 공식과 표를 한곳에 모았습니다.</p>
+
+<h2>기준은 소수 배당</h2>
+<p>소수 배당은 금액 1 을 넣었을 때 원금을 포함해 돌려받는 총액입니다. 2.50 이면 1 을 넣어 2.50 을 받고 순이익은 1.50 입니다. 다른 표기는 대부분 이 순이익 부분(소수 배당 − 1)을 다른 방식으로 적은 것입니다. 아래에서 d 는 소수 배당입니다.</p>
+
+<h2>표기별 변환 공식</h2>
+<div class="tw"><table>
+<tr><th>표기</th><th>소수 배당 → 표기</th><th>표기 → 소수 배당</th></tr>
+<tr><td>미국식 (d ≥ 2)</td><td>+(d − 1) × 100</td><td>양수 A: A/100 + 1</td></tr>
+<tr><td>미국식 (d &lt; 2)</td><td>−100 ÷ (d − 1)</td><td>음수 A: 100/|A| + 1</td></tr>
+<tr><td>분수</td><td>(d − 1) 을 기약분수로</td><td>a/b: a ÷ b + 1</td></tr>
+<tr><td>홍콩</td><td>d − 1</td><td>HK + 1</td></tr>
+<tr><td>인도네시아 (d ≥ 2)</td><td>+(d − 1)</td><td>양수 I: I + 1</td></tr>
+<tr><td>인도네시아 (d &lt; 2)</td><td>−1 ÷ (d − 1)</td><td>음수 I: 1/|I| + 1</td></tr>
+<tr><td>말레이 (d ≤ 2)</td><td>+(d − 1)</td><td>양수 M: M + 1</td></tr>
+<tr><td>말레이 (d &gt; 2)</td><td>−1 ÷ (d − 1)</td><td>음수 M: 1/|M| + 1</td></tr>
+</table></div>
+<p>미국식과 인도네시아식은 단위만 다르고 구조가 같습니다. 미국식을 100 으로 나누면 인도네시아식입니다. 말레이식은 부호 규칙이 반대라서, 양수가 정배당(강팀) 쪽이고 음수가 역배당 쪽입니다.</p>
+
+<h2>자주 보는 값 변환표</h2>
+<div class="tw"><table>
+<tr><th>소수</th><th>미국식</th><th>분수</th><th>홍콩</th><th>인도네시아</th><th>말레이</th><th>암시 확률</th></tr>
+<tr><td>1.25</td><td>−400</td><td>1/4</td><td>0.25</td><td>−4.00</td><td>0.25</td><td>80.0%</td></tr>
+<tr><td>1.50</td><td>−200</td><td>1/2</td><td>0.50</td><td>−2.00</td><td>0.50</td><td>66.7%</td></tr>
+<tr><td>1.80</td><td>−125</td><td>4/5</td><td>0.80</td><td>−1.25</td><td>0.80</td><td>55.6%</td></tr>
+<tr><td>1.91</td><td>−110</td><td>10/11</td><td>0.91</td><td>−1.10</td><td>0.91</td><td>52.4%</td></tr>
+<tr><td>2.00</td><td>+100</td><td>1/1</td><td>1.00</td><td>+1.00</td><td>1.00</td><td>50.0%</td></tr>
+<tr><td>2.50</td><td>+150</td><td>3/2</td><td>1.50</td><td>+1.50</td><td>−0.667</td><td>40.0%</td></tr>
+<tr><td>3.00</td><td>+200</td><td>2/1</td><td>2.00</td><td>+2.00</td><td>−0.50</td><td>33.3%</td></tr>
+<tr><td>5.00</td><td>+400</td><td>4/1</td><td>4.00</td><td>+4.00</td><td>−0.25</td><td>20.0%</td></tr>
+</table></div>
+
+<h2>직접 돌려 보기</h2>
+<p>아무 표기에나 값을 넣으면 나머지가 모두 채워집니다. 소수 배당 2.50 을 넣어 두었습니다.</p>
+<div class="w">
+<script src="https://nrt.cx/embed.js" data-widget="calc" data-tool="odds" data-dec="2.50" data-theme="light"></script>
+<a href="https://nrt.cx/p/calc/odds">배당 변환기 (소수·미국·분수) - 놀이터</a>
+</div>
+
+<h2>암시 확률</h2>
+<div class="f">암시 확률 = 1 / d</div>
+<p>소수 배당의 역수가 그 배당이 암시하는 확률입니다. 2.50 이면 40% 입니다. 한 경기 모든 결과의 암시 확률을 더하면 100% 를 넘는데, 넘는 부분이 배당표의 마진입니다. 그래서 암시 확률은 실제 확률보다 항상 조금 높게 나옵니다.</p>
+
+<h2>헷갈리기 쉬운 부분</h2>
+<ul>
+<li><b>분수 배당은 순이익 비율</b>입니다. 3/2 는 2 를 넣어 3 을 번다는 뜻이고 원금은 따로 돌아옵니다. 소수로는 2.50 이지 1.50 이 아닙니다.</li>
+<li><b>미국식 음수는 필요한 금액</b>입니다. −200 은 100 을 벌기 위해 200 을 넣어야 한다는 뜻입니다.</li>
+<li><b>말레이 음수는 손실 기준</b>입니다. −0.50 은 1 을 벌려면 0.50 을 위험에 건다는 뜻으로, 소수 배당 3.00 입니다.</li>
+<li><b>홍콩 배당 1.00 과 소수 배당 2.00 은 같은 값</b>입니다. 원금 포함 여부만 다릅니다.</li>
+</ul>
+
+<h2>코드로 옮기면</h2>
+<pre><code>const toDecimal = {
+  american: (a) =&gt; (a &gt; 0 ? a / 100 + 1 : 100 / Math.abs(a) + 1),
+  fractional: (num, den) =&gt; num / den + 1,
+  hongkong: (h) =&gt; h + 1,
+  indonesian: (i) =&gt; (i &gt; 0 ? i + 1 : 1 / Math.abs(i) + 1),
+  malay: (m) =&gt; (m &gt; 0 ? m + 1 : 1 / Math.abs(m) + 1),
+};
+
+const fromDecimal = (d) =&gt; ({
+  american: d &gt;= 2 ? (d - 1) * 100 : -100 / (d - 1),
+  hongkong: d - 1,
+  indonesian: d &gt;= 2 ? d - 1 : -1 / (d - 1),
+  malay: d &lt;= 2 ? d - 1 : -1 / (d - 1),
+  impliedProb: 1 / d,
+});
+
+fromDecimal(2.5);
+// american 150, hongkong 1.5, indonesian 1.5, malay -0.667, impliedProb 0.4</code></pre>
+
+<h2>자주 묻는 질문</h2>
+<dl class="faq"><dt>국내에서 쓰는 배당은 어떤 표기인가요?</dt><dd>소수 배당입니다. 유럽식이라고도 부릅니다. 원금을 포함한 총 수령 배수라서 금액에 곱하기만 하면 수령액이 나옵니다.</dd><dt>미국식 −110 은 왜 그렇게 자주 보이나요?</dt><dd>양쪽 확률이 반반인 마켓에 마진을 얹은 표준 가격이기 때문입니다. 소수로 1.91 이고, 양쪽이 모두 −110 이면 배당표 마진은 약 4.8% 입니다.</dd><dt>분수 배당 5/2 와 2/5 는 어떻게 다른가요?</dt><dd>5/2 는 2 를 넣어 5 를 버는 역배당으로 소수 3.50 입니다. 2/5 는 5 를 넣어 2 를 버는 정배당으로 소수 1.40 입니다. 앞 숫자가 크면 역배당입니다.</dd></dl>
+<h2>다른 계산 가이드</h2>
+<ul class="list"><li><a href="/guide/arbitrage/">양방(아비트리지) 계산</a><span>배당 역수의 합으로 차익 여부를 판정하고 금액을 나누는 법</span></li><li><a href="/guide/parlay/">폴더 조합 배당 계산</a><span>총 배당은 곱셈, 그런데 환급률도 같이 곱해진다는 점</span></li><li><a href="/guide/no-vig/">북 마진과 노빅 계산</a><span>배당표에서 마진을 뽑고 공정 배당으로 되돌리는 법</span></li><li><a href="/guide/kelly/">켈리 비율 계산</a><span>우위가 있을 때 자금의 몇 % 인지, 그리고 왜 절반만 쓰는지</span></li><li><a href="/guide/hedge/">해지(헤지)와 중간 정산 계산</a><span>남은 한 경기의 반대편에 얼마를 넣어야 손익이 고정되는지</span></li></ul>
+</main>
+<footer>
+<p>계산 결과는 입력한 값이 그대로 유지된다는 가정 위의 참고용 수치이며, 어떤 베팅도 권유하지 않습니다. 과몰입이 걱정되면 한국도박문제예방치유원 상담전화 1336 을 이용해 주세요.</p>
+<p>데이터와 계산기 제공: 놀이터 nrt.cx · 위젯 코드 <a href="https://github.com/nrtcx/noritur-widgets">GitHub</a></p>
+</footer>
+</body>
+</html>

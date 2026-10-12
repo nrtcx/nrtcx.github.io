@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>북마진 노빅 계산기: 마진율 공식과 공정 배당 구하는 법</title>
+<meta name="description" content="배당표에 들어 있는 북 마진(오버라운드)을 계산하고, 마진을 걷어낸 노빅(no-vig) 공정 배당과 확률을 구하는 방법을 공식과 예제로 정리했습니다. 비례 제거 방식의 한계와 다른 제거 방식도 함께 다룹니다.">
+<link rel="canonical" href="https://nrtcx.github.io/guide/no-vig/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="북마진 노빅 계산기: 마진율 공식과 공정 배당 구하는 법">
+<meta property="og:description" content="배당표에 들어 있는 북 마진(오버라운드)을 계산하고, 마진을 걷어낸 노빅(no-vig) 공정 배당과 확률을 구하는 방법을 공식과 예제로 정리했습니다. 비례 제거 방식의 한계와 다른 제거 방식도 함께 다룹니다.">
+<meta property="og:url" content="https://nrtcx.github.io/guide/no-vig/">
+<meta property="og:locale" content="ko_KR">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "마진과 환급률은 같은 말인가요?", "acceptedAnswer": {"@type": "Answer", "text": "같은 값을 다르게 표현한 것입니다. 마진은 S − 1, 환급률은 1/S 입니다. S 가 1.0481 이면 마진 4.81%, 환급률 95.41% 입니다. 둘을 더해도 정확히 100% 가 되지는 않습니다."}}, {"@type": "Question", "name": "핸디캡이나 언더오버도 같은 식인가요?", "acceptedAnswer": {"@type": "Answer", "text": "같습니다. 결과가 둘인 마켓은 두 배당의 역수를 더하면 됩니다. 1.91 / 1.91 이면 S = 1.0471, 공정 배당은 양쪽 모두 2.00 입니다."}}, {"@type": "Question", "name": "노빅 확률이 실제 확률인가요?", "acceptedAnswer": {"@type": "Answer", "text": "시장이 평가한 확률의 추정치입니다. 마진 제거 방식에 따라 조금씩 달라지고, 시장 평가 자체가 틀릴 수도 있습니다. 기준선으로 쓰되 정답으로 보지는 않는 것이 맞습니다."}}]}</script>
+</head>
+<body>
+<header class="top"><div class="in"><a class="brand" href="/">놀이터 데이터 노트</a><nav><a href="/">홈</a><a href="/guide/">계산 가이드</a></nav></div></header>
+<main>
+<h1>북 마진과 노빅(no-vig) 계산기: 공정 배당 구하는 법</h1>
+<p class="meta">계산 가이드 · 최종 수정 2026-10-12</p>
+<p class="lead">배당을 확률로 읽으려면 먼저 마진을 걷어내야 합니다. 배당표 하나에서 마진이 몇 % 인지 뽑고, 마진이 없었다면 배당이 얼마였을지 되돌리는 계산을 정리했습니다.</p>
+
+<h2>마진: 역수의 합에서 1 을 뺀 값</h2>
+<p>한 경기의 모든 결과에 대해 배당의 역수를 더합니다. 마진이 없는 공정한 배당표라면 합이 정확히 1 이 됩니다. 실제 배당표는 1 을 넘고, 넘친 만큼이 마진입니다.</p>
+<div class="f">S = Σ (1/oᵢ)<br>마진(오버라운드) = S − 1<br>환급률 = 1 / S</div>
+
+<h3>예제: 승무패 2.10 / 3.40 / 3.60</h3>
+<p>S = 0.4762 + 0.2941 + 0.2778 = 1.0481 입니다. 마진은 4.81%, 환급률은 95.41% 입니다.</p>
+
+<h2>노빅: 확률을 S 로 나눠 합을 1 로 맞춘다</h2>
+<p>가장 널리 쓰는 방법은 비례 제거입니다. 각 결과의 암시 확률을 S 로 나누면 합이 1 이 되는 확률이 나오고, 그 역수가 공정 배당입니다. 계산해 보면 공정 배당은 원래 배당에 S 를 곱한 값과 같습니다.</p>
+<div class="f">공정 확률 pᵢ = (1/oᵢ) ÷ S<br>공정 배당 = 1 / pᵢ = oᵢ × S</div>
+<div class="tw"><table>
+<tr><th>결과</th><th>배당</th><th>암시 확률</th><th>공정 확률</th><th>공정 배당</th></tr>
+<tr><td>홈 승</td><td>2.10</td><td>47.62%</td><td>45.43%</td><td>2.20</td></tr>
+<tr><td>무승부</td><td>3.40</td><td>29.41%</td><td>28.06%</td><td>3.56</td></tr>
+<tr><td>원정 승</td><td>3.60</td><td>27.78%</td><td>26.50%</td><td>3.77</td></tr>
+<tr><td>합계</td><td></td><td>104.81%</td><td>100.00%</td><td></td></tr>
+</table></div>
+
+<h2>직접 돌려 보기</h2>
+<p>위 예제 값을 넣어 둔 계산기입니다. 다른 경기의 배당을 넣어 마진과 공정 배당을 비교해 보세요.</p>
+<div class="w">
+<script src="https://nrt.cx/embed.js" data-widget="calc" data-tool="margin" data-odds="2.10,3.40,3.60" data-theme="light"></script>
+<a href="https://nrt.cx/p/calc/margin">북 마진·노빅 계산기 - 놀이터</a>
+</div>
+
+<h2>공정 배당은 어디에 쓰나</h2>
+<ul>
+<li><b>배당 비교의 기준선</b>: 마진이 낮은 배당표에서 공정 배당을 구해 두면, 다른 곳의 배당이 그 값보다 높은지 낮은지로 조건을 판단할 수 있습니다.</li>
+<li><b>배당 흐름 해석</b>: 배당이 움직였을 때 마진이 바뀐 것인지 확률 평가가 바뀐 것인지 구분하려면 공정 확률로 바꿔서 비교해야 합니다.</li>
+<li><b>모델 검증</b>: 직접 만든 예측 확률을 시장의 공정 확률과 견주어 보면 어디서 크게 어긋나는지 보입니다.</li>
+</ul>
+
+<h2>비례 제거의 한계</h2>
+<p>비례 제거는 마진이 모든 결과에 같은 비율로 붙었다고 가정합니다. 실제로는 배당이 높은 쪽(약체, 긴 배당)에 마진이 더 많이 붙는 경향이 있습니다. 그래서 비례 제거는 약체의 확률을 실제보다 조금 높게, 강팀의 확률을 조금 낮게 잡습니다.</p>
+<p>이 치우침을 줄이려는 방법으로 확률에 같은 지수를 씌워 합을 1 로 맞추는 지수 방식, 내부 정보 비중을 가정하는 신(Shin) 방식이 있습니다. 승무패처럼 배당 차이가 크지 않은 마켓은 방식에 따른 차이가 0.5%p 안쪽이지만, 우승팀 맞히기처럼 긴 배당이 많은 마켓에서는 차이가 커집니다.</p>
+
+<h2>코드로 옮기면</h2>
+<pre><code>function noVig(odds) {
+  const s = odds.reduce((sum, o) =&gt; sum + 1 / o, 0);
+  return {
+    margin: s - 1,
+    payoutRate: 1 / s,
+    fairProbs: odds.map((o) =&gt; 1 / o / s),
+    fairOdds: odds.map((o) =&gt; o * s),
+  };
+}
+
+noVig([2.10, 3.40, 3.60]);
+// margin 0.0481, payoutRate 0.9541
+// fairProbs [0.4543, 0.2806, 0.2650], fairOdds [2.20, 3.56, 3.77]</code></pre>
+
+<h2>자주 묻는 질문</h2>
+<dl class="faq"><dt>마진과 환급률은 같은 말인가요?</dt><dd>같은 값을 다르게 표현한 것입니다. 마진은 S − 1, 환급률은 1/S 입니다. S 가 1.0481 이면 마진 4.81%, 환급률 95.41% 입니다. 둘을 더해도 정확히 100% 가 되지는 않습니다.</dd><dt>핸디캡이나 언더오버도 같은 식인가요?</dt><dd>같습니다. 결과가 둘인 마켓은 두 배당의 역수를 더하면 됩니다. 1.91 / 1.91 이면 S = 1.0471, 공정 배당은 양쪽 모두 2.00 입니다.</dd><dt>노빅 확률이 실제 확률인가요?</dt><dd>시장이 평가한 확률의 추정치입니다. 마진 제거 방식에 따라 조금씩 달라지고, 시장 평가 자체가 틀릴 수도 있습니다. 기준선으로 쓰되 정답으로 보지는 않는 것이 맞습니다.</dd></dl>
+<h2>다른 계산 가이드</h2>
+<ul class="list"><li><a href="/guide/arbitrage/">양방(아비트리지) 계산</a><span>배당 역수의 합으로 차익 여부를 판정하고 금액을 나누는 법</span></li><li><a href="/guide/parlay/">폴더 조합 배당 계산</a><span>총 배당은 곱셈, 그런데 환급률도 같이 곱해진다는 점</span></li><li><a href="/guide/kelly/">켈리 비율 계산</a><span>우위가 있을 때 자금의 몇 % 인지, 그리고 왜 절반만 쓰는지</span></li><li><a href="/guide/odds-converter/">배당 변환</a><span>소수, 미국식, 분수, 홍콩, 인도네시아, 말레이 표기 한 번에</span></li><li><a href="/guide/hedge/">해지(헤지)와 중간 정산 계산</a><span>남은 한 경기의 반대편에 얼마를 넣어야 손익이 고정되는지</span></li></ul>
+</main>
+<footer>
+<p>계산 결과는 입력한 값이 그대로 유지된다는 가정 위의 참고용 수치이며, 어떤 베팅도 권유하지 않습니다. 과몰입이 걱정되면 한국도박문제예방치유원 상담전화 1336 을 이용해 주세요.</p>
+<p>데이터와 계산기 제공: 놀이터 nrt.cx · 위젯 코드 <a href="https://github.com/nrtcx/noritur-widgets">GitHub</a></p>
+</footer>
+</body>
+</html>
