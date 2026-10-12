@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>역배당 뜻과 축구 무승부 확률: 이변을 숫자로 읽는 법</title>
+<meta name="description" content="정배당과 역배당의 뜻, 배당이 암시하는 확률, 축구에서 무승부가 나오는 비율을 정리했습니다. 낮은 확률의 결과가 과대평가되는 경향과, 이변의 크기를 숫자로 재는 방법을 예제와 코드로 설명합니다.">
+<link rel="canonical" href="https://nrtcx.github.io/guide/underdog-draw/">
+<meta name="google-site-verification" content="rOshWj_W2Scs3uJbuYtHCS736k4ILVcMr57iZBa93As">
+<meta property="og:type" content="article">
+<meta property="og:title" content="역배당 뜻과 축구 무승부 확률: 이변을 숫자로 읽는 법">
+<meta property="og:description" content="정배당과 역배당의 뜻, 배당이 암시하는 확률, 축구에서 무승부가 나오는 비율을 정리했습니다. 낮은 확률의 결과가 과대평가되는 경향과, 이변의 크기를 숫자로 재는 방법을 예제와 코드로 설명합니다.">
+<meta property="og:url" content="https://nrtcx.github.io/guide/underdog-draw/">
+<meta property="og:locale" content="ko_KR">
+<link rel="icon" href="/favicon.ico" sizes="64x64" type="image/png">
+<link rel="icon" href="/assets/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "역배당은 배당 몇부터인가요?", "acceptedAnswer": {"@type": "Answer", "text": "정해진 기준은 없습니다. 한 경기 안에서 상대적으로 높은 쪽을 가리키는 말입니다. 통계를 낼 때는 공정 확률 25% 이하처럼 기준을 정해 두고 씁니다."}}, {"@type": "Question", "name": "무승부 배당은 왜 항상 3점대인가요?", "acceptedAnswer": {"@type": "Answer", "text": "축구 무승부 비율이 대체로 25% 안팎에서 움직이기 때문입니다. 확률 25% 에 마진을 얹으면 3점대 중반 배당이 됩니다."}}, {"@type": "Question", "name": "이변이 많은 리그가 따로 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "전력 차가 작은 리그일수록 낮은 확률의 결과가 자주 나옵니다. 다만 시즌마다 달라지므로 리그 이름보다 그 시점의 실제 집계를 보는 것이 정확합니다."}}]}</script>
+</head>
+<body>
+<header class="top"><div class="in"><a class="brand" href="/">놀이터 데이터 노트</a><nav><a href="/">홈</a><a href="/guide/">가이드</a></nav></div></header>
+<main>
+<h1>역배당 뜻과 축구 무승부 확률</h1>
+<p class="meta">데이터 읽는 법 · 최종 수정 2026-10-13</p>
+<p class="lead">역배당은 나올 가능성이 낮다고 평가된 결과에 붙는 높은 배당입니다. 높아 보이는 숫자가 실제로 어느 정도 확률을 뜻하는지, 축구에서 무승부는 얼마나 자주 나오는지 숫자로 확인합니다.</p>
+
+<h2>정배당과 역배당</h2>
+<ul>
+<li><b>정배당</b>: 이길 가능성이 높다고 평가된 쪽의 배당입니다. 숫자가 낮습니다.</li>
+<li><b>역배당</b>: 이길 가능성이 낮다고 평가된 쪽의 배당입니다. 숫자가 높습니다.</li>
+</ul>
+<p>정해진 경계는 없지만 흔히 한 경기에서 가장 낮은 배당을 정배당, 가장 높은 배당을 역배당이라고 부릅니다. 승 1.50, 무 4.20, 패 6.00 인 경기라면 1.50 이 정배당이고 6.00 이 역배당입니다.</p>
+
+<h2>배당을 확률로 바꾸기</h2>
+<div class="f">암시 확률 = 1 ÷ 배당</div>
+<div class="tw"><table>
+<tr><th>배당</th><th>암시 확률</th><th>대략</th></tr>
+<tr><td>1.50</td><td>66.7%</td><td>세 번에 두 번</td></tr>
+<tr><td>2.00</td><td>50.0%</td><td>두 번에 한 번</td></tr>
+<tr><td>3.00</td><td>33.3%</td><td>세 번에 한 번</td></tr>
+<tr><td>4.00</td><td>25.0%</td><td>네 번에 한 번</td></tr>
+<tr><td>6.00</td><td>16.7%</td><td>여섯 번에 한 번</td></tr>
+<tr><td>10.00</td><td>10.0%</td><td>열 번에 한 번</td></tr>
+</table></div>
+<p>암시 확률에는 마진이 들어 있어서 실제 평가 확률은 이보다 조금 낮습니다. 배당 6.00 은 여섯 번에 한 번보다 조금 덜 나온다고 보는 것이 맞습니다.</p>
+
+<h2>축구 무승부는 얼마나 나오나</h2>
+<p>유럽 주요 리그에서 무승부는 대체로 네 경기 중 한 경기꼴로 나옵니다. 리그와 시즌에 따라 22% 에서 28% 사이를 오갑니다. 득점이 적은 리그일수록 무승부 비율이 높고, 전력 차가 큰 경기일수록 낮습니다.</p>
+<p>무승부 배당이 3.20 에서 3.60 사이에 자주 형성되는 것도 이 때문입니다. 3.40 의 암시 확률은 29.4% 이고 마진을 걷어내면 28% 안팎입니다. 양 팀 전력이 비슷한 경기에서는 무승부 배당이 3.00 근처까지 내려가고, 한쪽이 압도적인 경기에서는 5.00 을 넘기도 합니다.</p>
+
+<h2>높은 배당이 과대평가되는 경향</h2>
+<p>여러 연구에서 반복해서 확인된 현상이 있습니다. 배당이 높은 결과일수록 배당이 암시하는 확률보다 실제로 덜 나온다는 것입니다. 정배당과 역배당 사이의 편향(favourite-longshot bias)이라고 부릅니다. 높은 배당 쪽에 마진이 더 많이 실리는 구조와, 적은 금액으로 큰 수령액을 기대하는 심리가 겹친 결과로 설명합니다.</p>
+<p>그래서 배당 10.00 의 결과는 10% 가 아니라 그보다 눈에 띄게 낮은 비율로 나오는 경우가 많습니다. 높은 배당이 조건까지 좋다는 뜻은 아닙니다.</p>
+
+<h2>이변을 숫자로 재는 법</h2>
+<p>이변은 낮게 평가된 결과가 실제로 나온 경우입니다. 크기는 그 결과의 사전 확률로 잴 수 있습니다. 정보 이론의 놀람 정도(surprisal)를 쓰면 확률이 낮을수록 값이 커집니다.</p>
+<div class="f">놀람 정도 = −log₂(공정 확률)</div>
+<div class="tw"><table>
+<tr><th>나온 결과의 공정 확률</th><th>놀람 정도</th><th>해석</th></tr>
+<tr><td>60%</td><td>0.74</td><td>예상대로</td></tr>
+<tr><td>30%</td><td>1.74</td><td>있을 법한 결과</td></tr>
+<tr><td>15%</td><td>2.74</td><td>이변</td></tr>
+<tr><td>7%</td><td>3.84</td><td>큰 이변</td></tr>
+</table></div>
+<p>한 주의 모든 경기에 대해 이 값을 평균하면 그 주가 예상대로 흘렀는지, 이변이 많았는지를 하나의 숫자로 볼 수 있습니다.</p>
+<p class="go">리그별 이변 경기는 놀이터 <a href="https://nrt.cx/p/sports/upsets">주간 배당 이변 지수</a>에서 매주 집계합니다.</p>
+
+<h2>코드로 옮기면</h2>
+<pre><code>function surprisal(odds, resultIndex) {
+  const s = odds.reduce((sum, o) =&gt; sum + 1 / o, 0);
+  const fair = 1 / odds[resultIndex] / s;     // 나온 결과의 공정 확률
+  return { fair, bits: -Math.log2(fair) };
+}
+
+surprisal([1.50, 4.20, 6.00], 2);
+// 원정 승이 나온 경우: fair 0.155, bits 2.69</code></pre>
+
+<h2>자주 묻는 질문</h2>
+<dl class="faq"><dt>역배당은 배당 몇부터인가요?</dt><dd>정해진 기준은 없습니다. 한 경기 안에서 상대적으로 높은 쪽을 가리키는 말입니다. 통계를 낼 때는 공정 확률 25% 이하처럼 기준을 정해 두고 씁니다.</dd><dt>무승부 배당은 왜 항상 3점대인가요?</dt><dd>축구 무승부 비율이 대체로 25% 안팎에서 움직이기 때문입니다. 확률 25% 에 마진을 얹으면 3점대 중반 배당이 됩니다.</dd><dt>이변이 많은 리그가 따로 있나요?</dt><dd>전력 차가 작은 리그일수록 낮은 확률의 결과가 자주 나옵니다. 다만 시즌마다 달라지므로 리그 이름보다 그 시점의 실제 집계를 보는 것이 정확합니다.</dd></dl>
+<h2>다른 가이드</h2>
+<ul class="list"><li><a href="/guide/arbitrage/">양방(아비트리지) 계산</a><span>배당 역수의 합으로 차익 여부를 판정하고 금액을 나누는 법</span></li><li><a href="/guide/parlay/">폴더 조합 배당 계산</a><span>총 배당은 곱셈, 그런데 환급률도 같이 곱해진다는 점</span></li><li><a href="/guide/no-vig/">북 마진과 노빅 계산</a><span>배당표에서 마진을 뽑고 공정 배당으로 되돌리는 법</span></li><li><a href="/guide/kelly/">켈리 비율 계산</a><span>우위가 있을 때 자금의 몇 % 인지, 그리고 왜 절반만 쓰는지</span></li><li><a href="/guide/odds-converter/">배당 변환</a><span>소수, 미국식, 분수, 홍콩, 인도네시아, 말레이 표기 한 번에</span></li><li><a href="/guide/hedge/">해지(헤지)와 중간 정산 계산</a><span>남은 한 경기의 반대편에 얼마를 넣어야 손익이 고정되는지</span></li><li><a href="/guide/odds-movement/">배당 흐름 보는 법</a><span>초기 배당과 현재 배당의 차이를 확률로 바꿔 읽는 방법</span></li><li><a href="/guide/odds-comparison/">해외 배당 보는 법과 배당 비교</a><span>같은 경기의 배당이 곳마다 다른 이유와 비교하는 순서</span></li><li><a href="/guide/proto-odds/">프로토 배당률 계산법</a><span>승부식 예상 적중금 계산과 연장전, 적중 특례 규칙</span></li></ul>
+</main>
+<footer>
+<p>계산 결과는 입력한 값이 그대로 유지된다는 가정 위의 참고용 수치이며, 어떤 베팅도 권유하지 않습니다. 과몰입이 걱정되면 한국도박문제예방치유원 상담전화 1336 을 이용해 주세요.</p>
+<p>계산기 제공: <a href="https://nrt.cx/p/calc">놀이터 스포츠 배당 계산기</a> · 위젯 코드 <a href="https://github.com/nrtcx/noritur-widgets">GitHub</a></p>
+</footer>
+</body>
+</html>
