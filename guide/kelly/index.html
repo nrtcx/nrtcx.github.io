@@ -11,6 +11,9 @@
 <meta property="og:description" content="켈리 기준(Kelly criterion) 공식이 어디서 나오는지, 배당과 예상 승률로 자금 대비 비율을 계산하는 방법, 승률 추정이 틀렸을 때 생기는 일과 하프·쿼터 켈리를 쓰는 이유를 예제와 코드로 정리했습니다.">
 <meta property="og:url" content="https://nrtcx.github.io/guide/kelly/">
 <meta property="og:locale" content="ko_KR">
+<link rel="icon" href="/favicon.ico" sizes="64x64" type="image/png">
+<link rel="icon" href="/assets/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 <link rel="stylesheet" href="/assets/style.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "예상 승률은 어디서 가져오나요?", "acceptedAnswer": {"@type": "Answer", "text": "직접 추정하거나, 마진이 낮은 배당표에서 마진을 걷어낸 공정 확률을 씁니다. 어느 쪽이든 추정치이므로 오차가 있다는 전제로 분수 켈리를 쓰는 것이 일반적입니다."}}, {"@type": "Question", "name": "여러 경기에 동시에 참여할 때는요?", "acceptedAnswer": {"@type": "Answer", "text": "경기마다 따로 계산한 비율을 그대로 더하면 전체 비중이 과해집니다. 동시에 진행되는 건수가 많으면 각 비율을 낮추거나 전체 합에 상한을 두는 방식으로 조정합니다."}}, {"@type": "Question", "name": "조합에도 켈리를 쓸 수 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "조합의 총 배당과 조합 전체의 적중 확률을 넣으면 계산은 됩니다. 다만 확률을 곱하는 과정에서 추정 오차도 같이 커지므로 결과 비율은 단일 경기보다 훨씬 보수적으로 봐야 합니다."}}]}</script>
 </head>
@@ -18,7 +21,7 @@
 <header class="top"><div class="in"><a class="brand" href="/">놀이터 데이터 노트</a><nav><a href="/">홈</a><a href="/guide/">계산 가이드</a></nav></div></header>
 <main>
 <h1>켈리 베팅 비율 계산기: 공식과 하프 켈리</h1>
-<p class="meta">계산 가이드 · 최종 수정 2026-10-12</p>
+<p class="meta">계산 가이드 · 최종 수정 2026-10-13</p>
 <p class="lead">켈리 공식은 한 줄이지만, 입력값인 예상 승률이 추정치라는 점 때문에 그대로 쓰면 위험합니다. 공식이 무엇을 최대화하는지, 추정이 빗나가면 어떻게 되는지를 숫자로 확인합니다.</p>
 
 <h2>공식</h2>

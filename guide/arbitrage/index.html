@@ -11,6 +11,9 @@
 <meta property="og:description" content="양방(아비트리지) 계산기가 내부에서 하는 계산을 공식과 예제로 풉니다. 배당 역수의 합으로 차익 여부를 판정하고, 어느 결과가 나와도 같은 금액을 받도록 금액을 나누는 방법, 직접 구현하는 코드까지 정리했습니다.">
 <meta property="og:url" content="https://nrtcx.github.io/guide/arbitrage/">
 <meta property="og:locale" content="ko_KR">
+<link rel="icon" href="/favicon.ico" sizes="64x64" type="image/png">
+<link rel="icon" href="/assets/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 <link rel="stylesheet" href="/assets/style.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "차익률이 0.98 이면 수익률은 2% 인가요?", "acceptedAnswer": {"@type": "Answer", "text": "정확히는 1/0.98 − 1 = 2.04% 입니다. S 가 1 에 가까울 때는 1 − S 로 어림해도 차이가 작지만, 금액을 나눌 때는 반드시 S 로 나눠야 수령액이 같아집니다."}}, {"@type": "Question", "name": "3-way 경기에서 두 결과만 걸면 안 되나요?", "acceptedAnswer": {"@type": "Answer", "text": "남은 한 결과가 나오면 전액을 잃으므로 양방이 아닙니다. 무승부가 있는 경기는 세 결과를 모두 포함해 S 를 계산해야 합니다."}}, {"@type": "Question", "name": "수령액을 똑같이 맞추지 않아도 되나요?", "acceptedAnswer": {"@type": "Answer", "text": "됩니다. 한 결과에는 원금만 돌아오게 하고 다른 결과에 이익을 몰아 주는 배분도 가능합니다. 다만 기대 수익의 합은 달라지지 않고 결과별 편차만 생깁니다."}}]}</script>
 </head>
@@ -18,7 +21,7 @@
 <header class="top"><div class="in"><a class="brand" href="/">놀이터 데이터 노트</a><nav><a href="/">홈</a><a href="/guide/">계산 가이드</a></nav></div></header>
 <main>
 <h1>양방(아비트리지) 계산기 원리와 금액 배분 공식</h1>
-<p class="meta">계산 가이드 · 최종 수정 2026-10-12</p>
+<p class="meta">계산 가이드 · 최종 수정 2026-10-13</p>
 <p class="lead">양방 계산은 두 줄짜리 산수입니다. 배당의 역수를 전부 더해 1 보다 작은지 보고, 작다면 그 비율대로 금액을 나눕니다. 이 글은 그 두 줄을 예제로 확인하고, 아래 계산기로 바로 돌려 볼 수 있게 정리했습니다.</p>
 
 <h2>판정: 역수의 합이 1 보다 작은가</h2>
