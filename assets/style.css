@@ -25,6 +25,9 @@ pre{margin:10px 0 16px;padding:14px;background:#111;color:#e5e5ea;border-radius:
 code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92em}
 p code,li code{background:#e9e9ee;padding:1px 5px;border-radius:4px}
 .f{background:#fff;border-left:4px solid #111;padding:12px 16px;margin:10px 0 16px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:15px}
+figure{margin:14px 0 18px}
+figure img{display:block;max-width:100%;height:auto;border:1px solid #e3e3e8;border-radius:10px}
+figcaption{font-size:13px;color:#6e6e73;margin-top:6px;text-align:center}
 .note{background:#fff8e1;border:1px solid #f1e0a6;border-radius:8px;padding:12px 14px;font-size:14px;color:#5c4a00}
 ul.cards{list-style:none;padding:0;margin:14px 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
 ul.cards li{background:#fff;border:1px solid #e3e3e8;border-radius:12px;padding:14px 16px}
