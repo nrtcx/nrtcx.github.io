@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>스포츠 분석 사이트 숫자 읽는 법: 시장 확률, 폼, 상대 전적 해석</title>
+<meta name="description" content="스포츠 분석 사이트에 나오는 숫자를 읽는 순서를 정리했습니다. 배당에서 마진을 걷어낸 시장 확률, 최근 5경기 폼 지표, 표본이 작은 상대 전적, 모델과 시장의 차이를 예제와 코드로 설명합니다.">
+<link rel="canonical" href="https://nrtcx.github.io/guide/sports-analysis-site/">
+<meta name="google-site-verification" content="rOshWj_W2Scs3uJbuYtHCS736k4ILVcMr57iZBa93As">
+<meta property="og:type" content="article">
+<meta property="og:title" content="스포츠 분석 사이트 숫자 읽는 법: 시장 확률, 폼, 상대 전적 해석">
+<meta property="og:description" content="스포츠 분석 사이트에 나오는 숫자를 읽는 순서를 정리했습니다. 배당에서 마진을 걷어낸 시장 확률, 최근 5경기 폼 지표, 표본이 작은 상대 전적, 모델과 시장의 차이를 예제와 코드로 설명합니다.">
+<meta property="og:url" content="https://nrtcx.github.io/guide/sports-analysis-site/">
+<meta property="og:locale" content="ko_KR">
+<link rel="icon" href="/favicon.ico" sizes="64x64" type="image/png">
+<link rel="icon" href="/assets/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "분석 사이트의 승률은 실제로 그만큼 맞나요?", "acceptedAnswer": {"@type": "Answer", "text": "시장 확률은 장기적으로 실제 결과 빈도와 비슷하게 맞는 것으로 알려져 있습니다. 다만 한 경기의 결과를 알려 주는 숫자는 아닙니다. 45% 는 100번 중 55번은 다른 결과가 나온다는 뜻입니다."}}, {"@type": "Question", "name": "폼과 상대 전적이 서로 반대면 어느 쪽을 봐야 하나요?", "acceptedAnswer": {"@type": "Answer", "text": "표본이 크고 최근 기록인 폼을 먼저 봅니다. 상대 전적은 경기 수가 적고 오래된 기록이 섞여 있어 참고용으로 두는 편이 안전합니다."}}, {"@type": "Question", "name": "무료 스포츠 분석 사이트와 유료 분석의 차이는 무엇인가요?", "acceptedAnswer": {"@type": "Answer", "text": "재료는 같습니다. 시장 확률, 폼, 상대 전적, 결장은 공개 데이터에서 나옵니다. 차이는 정리 방식과 갱신 속도에 있으므로, 근거 숫자를 공개하는지와 갱신 시각을 표시하는지를 먼저 확인하시기 바랍니다."}}]}</script>
+</head>
+<body>
+<header class="top"><div class="in"><a class="brand" href="/">놀이터 데이터 노트</a><nav><a href="/">홈</a><a href="/guide/">가이드</a><a href="/odds/today/">배당 하락</a><a href="/schedule/today/">경기 일정</a></nav></div></header>
+<main>
+<h1>스포츠 분석 사이트 숫자 읽는 법</h1>
+<p class="meta">데이터 읽는 법 · 최종 수정 2026-10-14</p>
+<p class="lead">스포츠 분석 사이트는 대부분 같은 재료를 씁니다. 시장 확률, 최근 폼, 상대 전적, 결장 네 가지입니다. 사이트마다 화면은 달라도 읽는 순서는 같습니다. 실제 경기 화면을 예로 숫자 하나하나가 무엇을 뜻하는지 정리했습니다.</p>
+
+<figure><img src="/assets/img/analysis-hero.jpg" alt="경기장 모형과 막대 그래프를 돋보기로 살펴보는 삽화" width="1200" height="675"></figure>
+
+<h2>1. 시장 확률: 배당에서 마진을 걷어낸 값</h2>
+<p>분석 사이트에서 가장 먼저 보이는 숫자는 승, 무, 패 확률입니다. 이 값은 대개 배당에서 나옵니다. 배당의 역수를 구한 뒤 세 값의 합으로 나누면 마진이 빠진 시장 확률이 됩니다.</p>
+<figure><img src="/assets/img/analysis-odds.png" alt="경기 페이지의 배당과 시장 확률, 배당 흐름 그래프" width="910" height="320" loading="lazy"><figcaption>홈 승 2.16, 무승부 3.44, 원정 승 3.70 과 그 아래의 시장 확률</figcaption></figure>
+<div class="tw"><table>
+<tr><th>결과</th><th>배당</th><th>역수</th><th>시장 확률</th></tr>
+<tr><td>홈 승</td><td>2.16</td><td>46.3%</td><td>45.2%</td></tr>
+<tr><td>무승부</td><td>3.44</td><td>29.1%</td><td>28.4%</td></tr>
+<tr><td>원정 승</td><td>3.70</td><td>27.0%</td><td>26.4%</td></tr>
+<tr><td>합계</td><td></td><td>102.4%</td><td>100%</td></tr>
+</table></div>
+<p>역수의 합이 102.4% 이므로 이 배당표의 마진은 2.4% 입니다. 화면에 45%, 28%, 27% 로 표시되는 숫자가 이렇게 계산된 값입니다. 여기서 읽을 것은 "홈 팀이 유리하다"가 아니라 "홈 팀이 이기지 못할 가능성이 55% 다"입니다.</p>
+
+<h2>2. 최근 폼: 5경기를 한 숫자로</h2>
+<p>최근 폼은 보통 최근 5경기에서 얻은 승점을 최대 승점 15 로 나눈 값입니다. 3승 2패면 9 ÷ 15 = 60%, 1승 1무 3패면 4 ÷ 15 = 27% 입니다.</p>
+<ul>
+<li><b>홈과 원정을 나눠 봅니다.</b> 전체 폼이 50% 여도 홈에서 80%, 원정에서 20% 인 팀이 있습니다.</li>
+<li><b>상대의 수준을 확인합니다.</b> 하위권 팀을 상대로 쌓은 5경기와 상위권을 상대로 한 5경기는 같은 60% 가 아닙니다.</li>
+<li><b>득점과 실점을 같이 봅니다.</b> 3승이 모두 한 골 차라면 폼 숫자보다 실제 전력 차이는 작습니다.</li>
+</ul>
+
+<h2>3. 상대 전적: 표본이 작다는 점부터</h2>
+<figure><img src="/assets/img/analysis-h2h.png" alt="두 팀의 최근 맞대결 2경기 결과" width="910" height="285" loading="lazy"><figcaption>최근 맞대결 2경기. 1승 1패입니다.</figcaption></figure>
+<p>상대 전적은 눈에 잘 들어오지만 표본이 가장 작은 지표입니다. 같은 리그의 두 팀은 한 시즌에 두 번 만납니다. 최근 5번의 맞대결은 2년 반에 걸친 기록이고, 그사이 감독과 선수단이 바뀌었을 가능성이 큽니다.</p>
+<p>상대 전적은 방향을 정하는 근거보다 확인용으로 쓰는 편이 안전합니다. 시장 확률과 폼이 같은 방향인데 상대 전적만 반대라면, 상대 전적 쪽을 덜 믿는 것이 합리적입니다.</p>
+
+<h2>4. 모델과 시장의 차이</h2>
+<p>자체 모델 확률을 보여주는 스포츠 분석 사이트라면 시장 확률과의 차이가 핵심 정보입니다.</p>
+<div class="f">차이 = 모델 확률 − 시장 확률</div>
+<p>모델이 홈 승 50%, 시장이 45% 라면 +5%p 입니다. 차이가 2~3%p 안쪽이면 사실상 같은 의견입니다. 10%p 이상 벌어졌다면 둘 중 하나가 모르는 정보가 있다는 뜻이고, 대개 시장 쪽이 더 많이 알고 있습니다. 차이가 큰 경기일수록 결장과 선발 명단을 다시 확인해야 합니다.</p>
+
+<h2>5. 결장: 숫자를 다시 보게 만드는 정보</h2>
+<p>위의 네 숫자는 모두 과거 기록에서 나옵니다. 결장은 그 기록에 없는 정보입니다. 주전 골키퍼나 득점 1위 선수가 빠지면 폼 60% 는 그대로여도 팀은 달라져 있습니다. 분석글의 작성 시각과 결장 목록의 갱신 시각을 꼭 확인합니다.</p>
+
+<h2>읽는 순서 정리</h2>
+<div class="tw"><table>
+<tr><th>순서</th><th>보는 것</th><th>확인할 점</th></tr>
+<tr><td>1</td><td>시장 확률</td><td>가장 높은 쪽이 몇 % 인가, 반대가 나올 확률은 몇 % 인가</td></tr>
+<tr><td>2</td><td>최근 폼</td><td>홈과 원정을 나눴는가, 상대 수준은 어땠는가</td></tr>
+<tr><td>3</td><td>상대 전적</td><td>몇 경기 기준인가, 얼마나 오래된 기록인가</td></tr>
+<tr><td>4</td><td>모델과 시장의 차이</td><td>10%p 이상 벌어졌는가</td></tr>
+<tr><td>5</td><td>결장</td><td>언제 갱신됐는가</td></tr>
+</table></div>
+<p class="go">이 다섯 가지를 한 화면에서 볼 수 있는 <a href="https://nrt.cx/">스포츠 분석 사이트</a> 놀이터에서 오늘 경기를 직접 확인해 보시기 바랍니다.</p>
+
+<h2>국내 리그와 해외 리그를 같은 기준으로</h2>
+<figure><img src="/assets/img/analysis-leagues.png" alt="경기 일정 화면의 종목과 리그 선택" width="910" height="719" loading="lazy"><figcaption>K리그부터 유럽 주요 리그, 국제 대회까지 같은 화면에서 고릅니다</figcaption></figure>
+<p>국내 축구 분석 사이트를 찾는 분이라면 K리그와 유럽 리그가 같은 지표로 정리돼 있는지 보시기 바랍니다. 리그마다 화면과 지표가 다르면 비교가 되지 않습니다. 경기 시간이 한국시간으로, 팀명이 한글로 표기되는지도 기본 조건입니다. 날짜별 경기는 <a href="https://nrt.cx/p/sports/schedule">축구 경기 일정</a>에서 리그별로 볼 수 있습니다.</p>
+
+<h2>코드로 옮기면</h2>
+<pre><code>// 배당 → 마진을 걷어낸 시장 확률
+function marketProbs(odds) {
+  const inv = odds.map((o) =&gt; 1 / o);
+  const sum = inv.reduce((a, b) =&gt; a + b, 0);
+  return { probs: inv.map((v) =&gt; v / sum), margin: sum - 1 };
+}
+
+// 최근 경기 결과 → 폼 지표 (W 3점, D 1점, L 0점)
+function form(results) {
+  const pts = results.reduce((a, r) =&gt; a + (r === 'W' ? 3 : r === 'D' ? 1 : 0), 0);
+  return pts / (results.length * 3);
+}
+
+marketProbs([2.16, 3.44, 3.70]); // probs 0.452, 0.284, 0.264 / margin 0.024
+form(['W', 'W', 'L', 'W', 'L']);  // 0.6</code></pre>
+
+<h2>자주 묻는 질문</h2>
+<dl class="faq"><dt>분석 사이트의 승률은 실제로 그만큼 맞나요?</dt><dd>시장 확률은 장기적으로 실제 결과 빈도와 비슷하게 맞는 것으로 알려져 있습니다. 다만 한 경기의 결과를 알려 주는 숫자는 아닙니다. 45% 는 100번 중 55번은 다른 결과가 나온다는 뜻입니다.</dd><dt>폼과 상대 전적이 서로 반대면 어느 쪽을 봐야 하나요?</dt><dd>표본이 크고 최근 기록인 폼을 먼저 봅니다. 상대 전적은 경기 수가 적고 오래된 기록이 섞여 있어 참고용으로 두는 편이 안전합니다.</dd><dt>무료 스포츠 분석 사이트와 유료 분석의 차이는 무엇인가요?</dt><dd>재료는 같습니다. 시장 확률, 폼, 상대 전적, 결장은 공개 데이터에서 나옵니다. 차이는 정리 방식과 갱신 속도에 있으므로, 근거 숫자를 공개하는지와 갱신 시각을 표시하는지를 먼저 확인하시기 바랍니다.</dd></dl>
+<h2>다른 가이드</h2>
+<ul class="list"><li><a href="/guide/arbitrage/">양방(아비트리지) 계산</a><span>배당 역수의 합으로 차익 여부를 판정하고 금액을 나누는 법</span></li><li><a href="/guide/parlay/">폴더 조합 배당 계산</a><span>총 배당은 곱셈, 그런데 환급률도 같이 곱해진다는 점</span></li><li><a href="/guide/no-vig/">북 마진과 노빅 계산</a><span>배당표에서 마진을 뽑고 공정 배당으로 되돌리는 법</span></li><li><a href="/guide/kelly/">켈리 비율 계산</a><span>우위가 있을 때 자금의 몇 % 인지, 그리고 왜 절반만 쓰는지</span></li><li><a href="/guide/odds-converter/">배당 변환</a><span>소수, 미국식, 분수, 홍콩, 인도네시아, 말레이 표기 한 번에</span></li><li><a href="/guide/hedge/">해지(헤지)와 중간 정산 계산</a><span>남은 한 경기의 반대편에 얼마를 넣어야 손익이 고정되는지</span></li><li><a href="/guide/odds-movement/">배당 흐름 보는 법</a><span>초기 배당과 현재 배당의 차이를 확률로 바꿔 읽는 방법</span></li><li><a href="/guide/odds-comparison/">해외 배당 보는 법과 배당 비교</a><span>같은 경기의 배당이 곳마다 다른 이유와 비교하는 순서</span></li><li><a href="/guide/proto-odds/">프로토 배당률 계산법</a><span>승부식 예상 적중금 계산과 연장전, 적중 특례 규칙</span></li><li><a href="/guide/underdog-draw/">역배당 뜻과 무승부 확률</a><span>정배당과 역배당, 축구 무승부 비율, 이변을 숫자로 재는 법</span></li></ul>
+</main>
+<footer>
+<p>계산 결과는 입력한 값이 그대로 유지된다는 가정 위의 참고용 수치이며, 어떤 베팅도 권유하지 않습니다. 과몰입이 걱정되면 한국도박문제예방치유원 상담전화 1336 을 이용해 주세요.</p>
+<p>계산기 제공: <a href="https://nrt.cx/p/calc">놀이터 스포츠 배당 계산기</a> · 위젯 코드 <a href="https://github.com/nrtcx/noritur-widgets">GitHub</a></p>
+</footer>
+</body>
+</html>
