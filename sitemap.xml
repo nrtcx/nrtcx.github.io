@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://nrtcx.github.io/</loc><lastmod>2026-10-14</lastmod></url>
-<url><loc>https://nrtcx.github.io/guide/</loc><lastmod>2026-10-14</lastmod></url>
+<url><loc>https://nrtcx.github.io/</loc><lastmod>2026-10-15</lastmod></url>
+<url><loc>https://nrtcx.github.io/guide/</loc><lastmod>2026-10-15</lastmod></url>
 <url><loc>https://nrtcx.github.io/guide/arbitrage/</loc><lastmod>2026-10-13</lastmod></url>
 <url><loc>https://nrtcx.github.io/guide/parlay/</loc><lastmod>2026-10-13</lastmod></url>
 <url><loc>https://nrtcx.github.io/guide/no-vig/</loc><lastmod>2026-10-13</lastmod></url>
@@ -13,4 +13,5 @@
 <url><loc>https://nrtcx.github.io/guide/proto-odds/</loc><lastmod>2026-10-13</lastmod></url>
 <url><loc>https://nrtcx.github.io/guide/underdog-draw/</loc><lastmod>2026-10-13</lastmod></url>
 <url><loc>https://nrtcx.github.io/guide/sports-analysis-site/</loc><lastmod>2026-10-14</lastmod></url>
+<url><loc>https://nrtcx.github.io/guide/sports-pick-site/</loc><lastmod>2026-10-15</lastmod></url>
 </urlset>
