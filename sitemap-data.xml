@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url><loc>https://nrtcx.github.io/odds/today/</loc><lastmod>2026-10-28</lastmod></url>
-<url><loc>https://nrtcx.github.io/odds/</loc><lastmod>2026-10-28</lastmod></url>
-<url><loc>https://nrtcx.github.io/schedule/today/</loc><lastmod>2026-10-28</lastmod></url>
-<url><loc>https://nrtcx.github.io/schedule/</loc><lastmod>2026-10-28</lastmod></url>
-<url><loc>https://nrtcx.github.io/weekly/</loc><lastmod>2026-10-28</lastmod></url>
-<url><loc>https://nrtcx.github.io/proto/</loc><lastmod>2026-10-28</lastmod></url>
+<url><loc>https://nrtcx.github.io/odds/</loc><lastmod>2026-10-29</lastmod></url>
+<url><loc>https://nrtcx.github.io/schedule/today/</loc><lastmod>2026-10-29</lastmod></url>
+<url><loc>https://nrtcx.github.io/schedule/</loc><lastmod>2026-10-29</lastmod></url>
+<url><loc>https://nrtcx.github.io/weekly/</loc><lastmod>2026-10-29</lastmod></url>
+<url><loc>https://nrtcx.github.io/proto/</loc><lastmod>2026-10-29</lastmod></url>
 <url><loc>https://nrtcx.github.io/weekly/2026-10-12/</loc><lastmod>2026-10-13</lastmod></url>
 <url><loc>https://nrtcx.github.io/proto/2026-121/</loc><lastmod>2026-10-13</lastmod></url>
 <url><loc>https://nrtcx.github.io/schedule/2026-10-13/</loc><lastmod>2026-10-13</lastmod></url>
@@ -47,4 +47,5 @@
 <url><loc>https://nrtcx.github.io/schedule/2026-10-27/</loc><lastmod>2026-10-27</lastmod></url>
 <url><loc>https://nrtcx.github.io/proto/2026-128/</loc><lastmod>2026-10-28</lastmod></url>
 <url><loc>https://nrtcx.github.io/odds/2026-10-27/</loc><lastmod>2026-10-27</lastmod></url>
+<url><loc>https://nrtcx.github.io/schedule/2026-10-28/</loc><lastmod>2026-10-28</lastmod></url>
 </urlset>
